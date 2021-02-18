@@ -1,0 +1,35 @@
+﻿@using Integration.Sample.Controllers;
+@using Integration.Sample.Models.Common;
+@using Integration.Sample.Models.Contacts;
+@model SearchResponseModel<ContactsModel>
+
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<partial name="_Alert" model="Context.GetAlert(nameof(ContactsController).FormatControllerName())" />
+
+<div class="d-flex align-items-start justify-content-between">
+    <div class="mb-2">
+        <h1 class="display-4">Contacts</h1>
+        <p>People and companies as recorded in mattero<sup>TM</sup></p>
+    </div>
+
+    <div class="align-self-end mb-4">
+        <a asp-action="@nameof(ContactsController.CreatePersonAsync).FormatActionName()"
+           asp-controller="@nameof(ContactsController).FormatControllerName()"
+           role="button"
+           class="btn btn-primary mr-1">
+            Create Person
+        </a>
+
+        <a asp-action="@nameof(ContactsController.CreateCompanyAsync).FormatActionName()"
+           asp-controller="@nameof(ContactsController).FormatControllerName()"
+           role="button"
+           class="btn btn-primary">
+            Create Company
+        </a>
+    </div>
+</div>
+
+<partial name="_Table" model="Model" />

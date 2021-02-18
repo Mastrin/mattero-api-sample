@@ -1,0 +1,35 @@
+﻿@using Integration.Sample.Controllers;
+@using Integration.Sample.Models.Contacts;
+
+@model CreateUpdateCompanyContactModel
+@{
+    var isUpdate = Model is UpdateCompanyContactModel;
+}
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Acn"></label>
+        <input asp-for="Acn" class="form-control">
+        <span asp-validation-for="Acn" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<partial name="_CreateUpdateForm" model="Model" />
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary mr-2">@(isUpdate ? "Update" : "Create")</button>
+        <a asp-action="@nameof(ContactsController.IndexAsync).FormatActionName()"
+           asp-controller="@nameof(ContactsController).FormatControllerName()"
+           role="button"
+           class="btn btn-secondary">
+            Cancel
+        </a>
+    </div>
+</div>

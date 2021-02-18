@@ -1,0 +1,26 @@
+﻿@using Integration.Sample.Controllers;
+@using Integration.Sample.Models.Common;
+@using Integration.Sample.Models.Tasks;
+@model SearchResponseModel<TasksModel>
+
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+<partial name="_Alert" model="Context.GetAlert(nameof(TasksController).FormatControllerName())" />
+
+<div class="d-flex align-items-start justify-content-between">
+    <div class="mb-2">
+        <h1 class="display-4">Tasks</h1>
+        <p>Tasks as recorded in mattero<sup>TM</sup></p>
+    </div>
+
+    <a asp-action="@nameof(TasksController.CreateAsync).FormatActionName()"
+       asp-controller="@nameof(TasksController).FormatControllerName()"
+       role="button"
+       class="btn btn-primary align-self-end mb-4">
+        Create
+    </a>
+</div>
+
+<partial name="_Table" model="Model" />

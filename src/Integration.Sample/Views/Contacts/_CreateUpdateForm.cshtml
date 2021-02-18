@@ -1,0 +1,24 @@
+﻿@using Integration.Sample.Models.Contacts;
+@model CreateUpdateContactModel
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Website"></label>
+        <input asp-for="Website" class="form-control">
+        <span asp-validation-for="Website" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Abn"></label>
+        <input asp-for="Abn" class="form-control">
+        <span asp-validation-for="Abn" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8">
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="form-text text-danger"></span>
+    </div>
+</div>

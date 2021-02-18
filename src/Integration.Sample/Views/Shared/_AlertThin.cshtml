@@ -1,0 +1,11 @@
+﻿@using Integration.Sample.Models.Common
+@model AlertModel
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <partial name="_AlertInner" model="Model" />
+        </div>
+    </div>
+}

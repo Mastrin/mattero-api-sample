@@ -1,0 +1,26 @@
+﻿@using Integration.Sample.Controllers;
+@using Integration.Sample.Models.Common;
+@using Integration.Sample.Models.Matters;
+@model SearchResponseModel<MattersModel>
+
+@{
+    ViewData["Title"] = "Matters";
+}
+
+<partial name="_Alert" model="Context.GetAlert(nameof(MattersController).FormatControllerName())" />
+
+<div class="d-flex align-items-start justify-content-between">
+    <div class="mb-2">
+        <h1 class="display-4">Matters</h1>
+        <p>Matters as recorded in mattero<sup>TM</sup></p>
+    </div>
+
+    <a asp-action="@nameof(MattersController.CreateAsync).FormatActionName()"
+       asp-controller="@nameof(MattersController).FormatControllerName()"
+       role="button"
+       class="btn btn-primary align-self-end mb-4">
+        Create
+    </a>
+</div>
+
+<partial name="_Table" model="Model" />

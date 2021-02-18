@@ -1,0 +1,125 @@
+﻿@using Integration.Sample.Models.Common
+@using Integration.Sample.Serializers.QueryString
+@model ISearchResponseModel
+@inject IQueryStringSerializer serializer;
+
+<div class="fixed-table-pagination" style="">
+    <div class="float-left pagination-detail">
+        <span class="pagination-info">
+            @{
+                int pageIndex = (Model.Page - 1) * Model.PageSize;
+                int start = pageIndex + 1;
+                int end = pageIndex + Model.PageSize;
+
+                if (end > Model.TotalRecords)
+                    end = Model.TotalRecords;
+            }
+
+            Showing @start to @end of @Model.TotalRecords rows
+        </span>
+
+        <span class="page-list">
+            <span class="btn-group dropdown dropup">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span class="page-size">
+                        @Model.PageSize
+                    </span>
+                    <span class="caret"></span>
+                </button>
+
+                <span class="dropdown-menu">
+                    @{
+                        int[] pageSizes = { 1, 5, 10, 25, 50, 100, 250 };
+
+                        foreach (int pageSize in pageSizes)
+                        {
+                            <a class="dropdown-item@(Model.PageSize == pageSize ? " active" : "")"
+                               href="@await GetUrlForPageAsync(pageSize: pageSize)">
+                                @pageSize
+                            </a>
+                        }
+                    }
+                </span>
+            </span> rows per page
+        </span>
+    </div>
+    @{
+        var pages = (int)Math.Ceiling(Model.TotalRecords / (double)Model.PageSize);
+        if (pages > 1)
+        {
+            <div class="float-right pagination">
+                <ul class="pagination">
+                    <li class="page-item page-pre">
+                        <a class="btn page-link@(Model.Page <= 1 ? " disabled" : "")"
+                           aria-label="previous page"
+                           href="@await GetUrlForPageAsync(page: Model.Page - 1)">
+                            ‹
+                        </a>
+                    </li>
+                    @{
+                        const int pageButtons = 5;
+
+                        var startPage = Model.Page - 2;
+
+                        if (startPage < 1)
+                            startPage = 1;
+
+                        var pageRange = pages - (startPage - 1);
+                        var maxButtons = pageRange > pageButtons ? pageButtons : pageRange;
+
+                        if (pageRange < 5)
+                        {
+                            startPage = startPage - (pageButtons - pageRange);
+
+                            if (startPage < 1)
+                                startPage = 1;
+
+                            pageRange = pages - (startPage - 1);
+                            maxButtons = pageRange > pageButtons ? pageButtons : pageRange;
+                        }
+
+                        for (int index = 0; index < maxButtons; index++)
+                        {
+                            var page = startPage + index;
+
+                            <li class="page-item@(Model.Page == page ? " active" : "")">
+                                <a class="page-link"
+                                   aria-label="to page @(page)"
+                                   href="@await GetUrlForPageAsync(page: page)">
+                                    @(page)
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    <li class="page-item page-next">
+                        <a class="btn page-link@(Model.TotalRecords <= end ? " disabled" : "")"
+                           aria-label="next page"
+                           href="@await GetUrlForPageAsync(page: Model.Page + 1)">
+                            ›
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+</div>
+
+@functions
+{
+    public async Task<string> GetUrlForPageAsync(int? page = null, int? pageSize = null)
+    {
+        var location = Context.Request.Path;
+
+        var clone = Model.Clone();
+
+        if (page.HasValue)
+            clone.Page = page.Value;
+
+        if (pageSize.HasValue)
+            clone.PageSize = pageSize.Value;
+
+        var queryString = await serializer.SerializeAsync(clone);
+        return $"{location}?{queryString}";
+    }
+}

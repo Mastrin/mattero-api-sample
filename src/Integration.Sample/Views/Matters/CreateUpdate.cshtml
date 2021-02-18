@@ -1,0 +1,40 @@
+﻿@using Integration.Sample.Controllers
+@using Integration.Sample.Models.Matters
+
+@model CreateUpdateMatterModel
+@{
+    var isUpdate = Model is UpdateMatterModel;
+
+    var actionName = isUpdate
+        ? nameof(MattersController.UpdateAsync).FormatActionName()
+        : nameof(MattersController.CreateAsync).FormatActionName();
+
+    ViewData["Title"] = $"{(isUpdate ? "Update" : "Create")} Matter";
+}
+
+<partial name="_AlertThin" model="Context.GetAlert(nameof(MattersController).FormatControllerName())" />
+
+<div class="mb-2">
+    <h1 class="display-4">@(isUpdate ? "Update" : "Create") Matter</h1>
+    <p>@(isUpdate ? "Update" : "Create") a matter in mattero<sup>TM</sup></p>
+</div>
+
+@if (isUpdate)
+{
+    var id = ((UpdateMatterModel)Model).Id;
+
+    <form method="post"
+          asp-action="@actionName"
+          asp-controller="@nameof(MattersController).FormatControllerName()"
+          asp-route-id="@id">
+        <partial name="_CreateUpdateForm" />
+    </form>
+}
+else
+{
+    <form method="post"
+          asp-action="@actionName"
+          asp-controller="@nameof(MattersController).FormatControllerName()">
+        <partial name="_CreateUpdateForm" />
+    </form>
+}

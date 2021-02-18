@@ -1,0 +1,149 @@
+﻿@using Integration.Sample.Controllers;
+@using Integration.Sample.Models.Matters;
+@using Integration.Sample.ApiServer.Matters.Common;
+
+@model CreateUpdateMatterModel
+@{
+    var isUpdate = Model is UpdateMatterModel;
+
+    var items = ((IEnumerable<CostingMethod>)Enum.GetValues(typeof(CostingMethod)))
+        .Select(status => new SelectListItem { Text = status.ToDisplayName(), Value = ((int)status).ToString() })
+        .ToList();
+}
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control">
+        <span asp-validation-for="Title" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="DateOpen"></label>
+        <input type="date" asp-for="DateOpen" class="form-control">
+        <span asp-validation-for="DateOpen" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="DateEstimatedCompletion"></label>
+        <input type="date" asp-for="DateEstimatedCompletion" class="form-control">
+        <span asp-validation-for="DateEstimatedCompletion" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="EstimatedFee"></label>
+        <input asp-for="EstimatedFee" class="form-control">
+        <span asp-validation-for="EstimatedFee" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="CostingMethod"></label>
+        <select asp-for="CostingMethod"
+                asp-items="items"
+                class="form-control"
+                data-search-select>
+        </select>
+        <span asp-validation-for="CostingMethod" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="CostTemplateId"></label>
+        <select asp-for="CostTemplateId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/cost-templates/search"
+                data-search-select-default="@Model.CostTemplateId"
+                data-search-select-parent="@Html.IdFor(model => model.CostingMethod)"
+                data-search-select-parent-filter="@items.FirstOrDefault(items => items.Text == CostingMethod.CostTemplate.ToDisplayName())?.Value">
+        </select>
+        <span asp-validation-for="CostTemplateId" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="PracticeAreaId"></label>
+        <select asp-for="PracticeAreaId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/practice-areas/search"
+                data-search-select-default="@Model.PracticeAreaId">
+        </select>
+        <span asp-validation-for="PracticeAreaId" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="StageId"></label>
+        <select asp-for="StageId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/practice-areas/search/stages"
+                data-search-select-default="@Model.StageId"
+                data-search-select-parent="@Html.IdFor(model => model.PracticeAreaId)">
+        </select>
+        <span asp-validation-for="StageId" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="ClientId"></label>
+        <select asp-for="ClientId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/contacts/search"
+                data-search-select-default="@Model.ClientId">
+        </select>
+        <span asp-validation-for="ClientId" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="LawyerId"></label>
+        <select asp-for="LawyerId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/contacts/search/staff"
+                data-search-select-default="@Model.LawyerId">
+        </select>
+        <span asp-validation-for="LawyerId" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="ReferredById"></label>
+        <select asp-for="ReferredById"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/contacts/search"
+                data-search-select-default="@Model.ReferredById">
+        </select>
+        <span asp-validation-for="ReferredById" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary mr-2">@(isUpdate ? "Update" : "Create")</button>
+        <a asp-action="@nameof(MattersController.IndexAsync).FormatActionName()"
+           asp-controller="@nameof(MattersController).FormatControllerName()"
+           role="button"
+           class="btn btn-secondary">
+            Cancel
+        </a>
+    </div>
+</div>
