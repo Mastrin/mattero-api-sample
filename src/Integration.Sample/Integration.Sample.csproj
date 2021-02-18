@@ -1,21 +1,11 @@
-﻿<Project>
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <BaseIntermediateOutputPath>..\..\obj\Integration.Sample</BaseIntermediateOutputPath>
-  </PropertyGroup>
-
-  <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.props" />
-
-  <PropertyGroup>
-    <OutputPath>..\..\bin\$(ConfigurationName)\Integration.Sample</OutputPath>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Integration.Sample</AssemblyName>
     <RootNamespace>Integration.Sample</RootNamespace>
     <UserSecretsId>90823c14-94f4-4d0d-8359-c13ef5e6744b</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
-
-  <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
