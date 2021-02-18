@@ -12,6 +12,7 @@
     <RootNamespace>Integration.Sample</RootNamespace>
     <UserSecretsId>90823c14-94f4-4d0d-8359-c13ef5e6744b</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <Import Sdk="Microsoft.NET.Sdk.Web" Project="Sdk.targets" />
