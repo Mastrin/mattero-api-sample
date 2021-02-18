@@ -11,4 +11,4 @@ If you wish to use CLI, you can run the project by using this command in the roo
 Using either of these methods will launch the website with the following URLs https://localhost:5001, and http://localhost:5000.
 
 # More
-Visit our documentation page for more information (here)(https://my.mattero.com.au/developer)
+Visit our documentation page for more information [here](https://my.mattero.com.au/developer)
