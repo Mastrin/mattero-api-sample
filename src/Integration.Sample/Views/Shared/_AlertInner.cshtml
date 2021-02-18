@@ -1,0 +1,17 @@
+﻿@using Integration.Sample.Models.Common
+@model AlertModel
+
+@if (Model != null)
+{
+    var @class = Model.Severity switch
+    {
+        AlertSeverity.Success => " alert-success",
+        AlertSeverity.Warning => " alert-warning",
+        AlertSeverity.Error => " alert-danger",
+        _ => throw new NotSupportedException()
+    };
+
+    <div class="alert@(@class)" role="alert">
+        @Model.Message
+    </div>
+}

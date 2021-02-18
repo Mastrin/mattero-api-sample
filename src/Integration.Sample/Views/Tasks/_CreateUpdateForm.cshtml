@@ -1,0 +1,119 @@
+﻿@using Integration.Sample.Controllers;
+@using Integration.Sample.Models.Tasks;
+@using TaskStatus = Integration.Sample.ApiServer.Tasks.Common.TaskStatus;
+
+@model CreateUpdateTaskModel
+@{
+    var isUpdate = Model is UpdateTaskModel;
+
+    var items = ((IEnumerable<TaskStatus>)Enum.GetValues(typeof(TaskStatus)))
+        .Select(status => new SelectListItem { Text = status.ToDisplayName(), Value = ((int)status).ToString() })
+        .ToList();
+}
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8">
+        <label asp-for="IsContact">Contact Type</label>
+        <br />
+        <div class="form-check form-check-inline">
+            <input class="form-check-input"
+                   type="radio"
+                   asp-for="IsContact"
+                   value="true"
+                   data-checkbox-true />
+            <label class="form-check-label" for="contactCheckbox">
+                Contact
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input"
+                   type="radio"
+                   asp-for="IsContact"
+                   value="false" />
+            <label class="form-check-label" for="matterCheckbox">
+                Matter
+            </label>
+        </div>
+        <span asp-validation-for="IsContact" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="form-text text-danger"></span>
+    </div>
+</div>
+
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Status"></label>
+        <select asp-for="Status"
+                asp-items="items"
+                class="form-control"
+                data-search-select>
+        </select>
+        <span asp-validation-for="Status" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="DueDate"></label>
+        <input type="date" asp-for="DueDate" class="form-control">
+        <span asp-validation-for="DueDate" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="AssignedToId"></label>
+        <select asp-for="AssignedToId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/contacts/search/staff"
+                data-search-select-default="@Model.AssignedToId">
+        </select>
+        <span asp-validation-for="AssignedToId" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4"
+         data-checkbox-show="#IsContact"
+         data-checkbox-value="true"
+         @(!Model.IsContact.HasValue || !Model.IsContact.Value ? " data-hidden" : "")>
+        <label asp-for="AssociatedContactId"></label>
+        <select asp-for="AssociatedContactId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/contacts/search"
+                data-search-select-default="@Model.AssociatedContactId">
+        </select>
+        <span asp-validation-for="AssociatedContactId" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4"
+         data-checkbox-show="#IsContact"
+         data-checkbox-value="false"
+         @(!Model.IsContact.HasValue || Model.IsContact.Value ? " data-hidden" : "")>
+        <label asp-for="AssociatedMatterId"></label>
+        <select asp-for="AssociatedMatterId"
+                class="form-control"
+                data-search-select
+                data-search-select-source="/contacts/search"
+                data-search-select-default="@Model.AssociatedMatterId">
+        </select>
+        <span asp-validation-for="AssociatedMatterId" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary mr-2">@(isUpdate ? "Update" : "Create")</button>
+        <a asp-action="@nameof(TasksController.IndexAsync).FormatActionName()"
+           asp-controller="@nameof(TasksController).FormatControllerName()"
+           role="button"
+           class="btn btn-secondary">
+            Cancel
+        </a>
+    </div>
+</div>

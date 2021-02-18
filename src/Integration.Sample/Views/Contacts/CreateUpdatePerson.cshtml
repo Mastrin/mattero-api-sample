@@ -1,0 +1,40 @@
+﻿@using Integration.Sample.Controllers
+@using Integration.Sample.Models.Contacts
+
+@model CreateUpdatePersonContactModel
+@{
+    var isUpdate = Model is UpdatePersonContactModel;
+
+    var actionName = isUpdate
+        ? nameof(ContactsController.UpdatePersonAsync).FormatActionName()
+        : nameof(ContactsController.CreatePersonAsync).FormatActionName();
+
+    ViewData["Title"] = $"{(isUpdate ? "Update" : "Create")} Person";
+}
+
+<partial name="_AlertThin" model="Context.GetAlert(nameof(ContactsController).FormatControllerName())" />
+
+<div class="mb-2">
+    <h1 class="display-4">@(isUpdate ? "Update" : "Create") Person</h1>
+    <p>@(isUpdate ? "Update" : "Create") a person in mattero<sup>TM</sup></p>
+</div>
+
+@if (isUpdate)
+{
+    var id = ((UpdatePersonContactModel)Model).Id;
+
+    <form method="post"
+          asp-action="@actionName"
+          asp-controller="@nameof(ContactsController).FormatControllerName()"
+          asp-route-id="@id">
+        <partial name="_CreateUpdatePersonForm" />
+    </form>
+}
+else
+{
+    <form method="post"
+          asp-action="@actionName"
+          asp-controller="@nameof(ContactsController).FormatControllerName()">
+        <partial name="_CreateUpdatePersonForm" />
+    </form>
+}

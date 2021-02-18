@@ -1,0 +1,88 @@
+﻿@using Integration.Sample.Controllers;
+@using Integration.Sample.Models.Contacts;
+@using Integration.Sample.ApiServer.Contacts.Common;
+
+@model CreateUpdatePersonContactModel
+@{
+    var isUpdate = Model is UpdatePersonContactModel;
+
+    var items = ((IEnumerable<Gender>)Enum.GetValues(typeof(Gender)))
+        .Select(status => new SelectListItem { Text = status.ToDisplayName(), Value = ((int)status).ToString() })
+        .ToList();
+}
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control">
+        <span asp-validation-for="FirstName" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control">
+        <span asp-validation-for="LastName" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="MiddleName"></label>
+        <input asp-for="MiddleName" class="form-control">
+        <span asp-validation-for="MiddleName" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Birthday"></label>
+        <input type="date" asp-for="Birthday" class="form-control">
+        <span asp-validation-for="Birthday" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Company"></label>
+        <input asp-for="Company" class="form-control">
+        <span asp-validation-for="Company" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="JobTitle"></label>
+        <input asp-for="JobTitle" class="form-control">
+        <span asp-validation-for="JobTitle" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Gender"></label>
+        <select asp-for="Gender"
+                asp-items="items"
+                class="form-control"
+                data-search-select>
+        </select>
+        <span asp-validation-for="Gender" class="form-text text-danger"></span>
+    </div>
+
+    <div class="form-group col-12 col-md-6 col-lg-4">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control">
+        <span asp-validation-for="Title" class="form-text text-danger"></span>
+    </div>
+</div>
+
+<partial name="_CreateUpdateForm" model="Model" />
+
+<div class="form-row">
+    <div class="form-group col-12 col-lg-8 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary mr-2">@(isUpdate ? "Update" : "Create")</button>
+        <a asp-action="@nameof(ContactsController.IndexAsync).FormatActionName()"
+           asp-controller="@nameof(ContactsController).FormatControllerName()"
+           role="button"
+           class="btn btn-secondary">
+            Cancel
+        </a>
+    </div>
+</div>
